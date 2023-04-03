@@ -1,3 +1,8 @@
+import datetime
+import pytz
+
+# Checks if the list of grades has changed
+
 def isUpdated(original, new):
     matching = True
 
@@ -7,3 +12,8 @@ def isUpdated(original, new):
         matching = False
 
     return matching, return_value
+
+
+def getTime():
+    my_date = datetime.now(pytz.timezone('US/Central'))
+    return my_date.strftime("%m/%d/%Y %I:%M:%S %p")

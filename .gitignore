@@ -2,3 +2,4 @@ __pycache__
 dist
 HAC_API.egg-info
 src/home_access_center_api.egg-info
+src/hacapi.egg-info
