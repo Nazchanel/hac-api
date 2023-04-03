@@ -1,5 +1,5 @@
-import datetime
 import pytz
+from datetime import datetime
 
 # Checks if the list of grades has changed
 

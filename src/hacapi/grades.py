@@ -1,8 +1,7 @@
 from colorama import Fore
 from . import session
 from bs4 import BeautifulSoup
-import json
-import pandas as pd
+from . import payloads
 
 def returnHTML():
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
@@ -201,12 +200,18 @@ def returnQuarterGrade(quarter):
     session_requests = session.session_requests
     
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
-            
-    with open(f'payloads/{quarter}.json', 'r') as file:
-        json_str = file.read()
-    json_obj = json.loads(json_str)
+    
+    payload = {}     
+    if quarter == 1:
+        payload = payloads.payload1
+    elif quarter == 2:
+       payload = payloads.payload2
+    elif quarter == 3:
+        payload = payloads.payload3
+    elif quarter == 4:
+      payload = payloads.payload4
 
-    specific_quarter = session_requests.post(urls, data=json_obj,headers=dict(referer=urls))
+    specific_quarter = session_requests.post(urls, data=payload,headers=dict(referer=urls))
 
     soup = BeautifulSoup(specific_quarter.text, "html.parser")
 
