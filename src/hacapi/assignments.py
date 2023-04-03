@@ -1,7 +1,7 @@
 
 import json
 import pandas as pd
-import session
+from . import session
 
 def returnQuarterAssignmentsHTML(quarter):
     session_requests = session.session_requests

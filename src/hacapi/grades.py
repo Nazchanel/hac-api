@@ -1,5 +1,5 @@
 from colorama import Fore
-import session
+from . import session
 from bs4 import BeautifulSoup
 import json
 import pandas as pd
