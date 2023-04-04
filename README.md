@@ -8,31 +8,31 @@ This is a simple API to access the Home Access Center (HAC) of the [Frisco Indep
 
 ## Modules
 
-### `assignment_grades`
+### assignment_grades
 
 * return_quarter_assignments_html(***quarter***)
 * return_quarter_assignments_df(***quarter***)
 * return_current_assignments_df(    )
 * return_current_assignments_html(  )
 
-### `course_grades`
+### course_grades
 
 * return_html(  )
 * returnCurrentGrades(  )
 * return_quarter_grade(***quarter***)
 
-### `session`
+### session
 
 * init(***username***, ***password***)
 * reset(    )
 * return_to_current(    )
 
-### `transcript`
+### transcript
 
 * return_weighted_gpa(  )
 * return_college_gpa(   )
 
-### `misc`
+### misc
 
 * is_updated(***original***, ***new***)
 * get_time( )
