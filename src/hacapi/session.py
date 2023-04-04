@@ -6,7 +6,7 @@ from lxml import html
 session_requests = requests.session()
 
 
-def session_init(username, password):
+def init(username, password):
     global session_requests
 
     login_url = 'https://hac.friscoisd.org/HomeAccess/Account/LogOn?ReturnUrl=%2fHomeAccess%2f'
@@ -24,8 +24,8 @@ def session_init(username, password):
     }
     session_requests.post(login_url, data=login_payload, headers=dict(referer=login_url))
 
-    
-def reset_session():
+
+def reset():
     global session_requests
 
     session_requests = requests.session()
@@ -37,4 +37,3 @@ def return_to_current():
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
 
     session_requests.get(urls, headers=dict(referer=urls))
-

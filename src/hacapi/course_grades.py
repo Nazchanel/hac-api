@@ -3,7 +3,8 @@ from . import session
 from bs4 import BeautifulSoup
 from . import payloads
 
-def returnHTML():
+
+def return_html():
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
 
     session_requests = session.session_requests
@@ -19,7 +20,8 @@ def returnHTML():
     return grades_html, name_html
 
 
-def initializeClasses(grades_html, names_html):
+# Function that only works internally and not meant to be accessed by the user
+def _initialize_classes(grades_html, names_html):
     class1 = 0
     try:
         class1 = str(grades_html[0])
@@ -163,55 +165,56 @@ def returnCurrentGrades():
 
     session.return_to_current()
 
-    html = returnHTML()
+    html = return_html()
 
     grades_html = html[0]
     name_html = html[1]
 
-    classes = initializeClasses(grades_html, name_html)
+    classes = _initialize_classes(grades_html, name_html)
 
     class_names = classes[0]
     class_grades = classes[1]
-    
+
     try:
         class_grades_ = [i.replace("%", "") for i in class_grades]
     except:
         class_grades_ = 0
-        print("FAILIURE")
+        print("FAILURE")
 
-    class_grades = []    
-    for i in class_grades_: # type: ignore
+    class_grades = []
+    for i in class_grades_:  # type: ignore
         try:
             class_grades.append(float(i))
         except:
             print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
             class_grades.append(float(0))
-    
+
     names_ = []
     grades_ = []
 
     for i in range(len(class_names)):
-
         names_.append(class_names[i])
         grades_.append(class_grades[i])
 
     return (names_, grades_)
-def returnQuarterGrade(quarter):
+
+
+def return_quarter_grade(quarter):
     session_requests = session.session_requests
-    
+
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
-    
-    payload = {}     
+
+    payload = {}
     if quarter == 1:
         payload = payloads.payload1
     elif quarter == 2:
-       payload = payloads.payload2
+        payload = payloads.payload2
     elif quarter == 3:
         payload = payloads.payload3
     elif quarter == 4:
-      payload = payloads.payload4
+        payload = payloads.payload4
 
-    specific_quarter = session_requests.post(urls, data=payload,headers=dict(referer=urls))
+    specific_quarter = session_requests.post(urls, data=payload, headers=dict(referer=urls))
 
     soup = BeautifulSoup(specific_quarter.text, "html.parser")
 
@@ -219,7 +222,7 @@ def returnQuarterGrade(quarter):
 
     name_html = soup.findAll('a', {"class": ["sg-header-heading"]})
 
-    classes = initializeClasses(grades_html, name_html)
+    classes = _initialize_classes(grades_html, name_html)
 
     class_names = classes[0]
     class_grades = classes[1]
@@ -228,22 +231,21 @@ def returnQuarterGrade(quarter):
         class_grades_ = [i.replace("%", "") for i in class_grades]
     except:
         class_grades_ = 0
-        print("FAILIURE")
+        print("FAILURE")
 
-    class_grades = []    
-    for i in class_grades_: # type: ignore
+    class_grades = []
+    for i in class_grades_:  # type: ignore
         try:
             class_grades.append(float(i))
         except:
             print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
             class_grades.append(float(0))
-    
+
     names_ = []
     grades_ = []
 
     for i in range(len(class_names)):
-
         names_.append(class_names[i])
         grades_.append(class_grades[i])
 
-    return (names_, grades_)
+    return names_, grades_
