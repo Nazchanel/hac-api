@@ -1,10 +1,9 @@
-from colorama import Fore
 from . import session
 from bs4 import BeautifulSoup
 from . import payloads
 
 
-def return_html():
+def _return_html():
     urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
 
     session_requests = session.session_requests
@@ -165,7 +164,7 @@ def return_current_grades():
 
     session.return_to_current()
 
-    html = return_html()
+    html = _return_html()
 
     grades_html = html[0]
     name_html = html[1]
@@ -186,7 +185,7 @@ def return_current_grades():
         try:
             class_grades.append(float(i))
         except:
-            print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
+            print("\n" + "ERROR: " + "Could not convert " + i + " to a float." + "\n")
             class_grades.append(float(0))
 
     names_ = []
@@ -238,7 +237,7 @@ def return_quarter_grade(quarter):
         try:
             class_grades.append(float(i))
         except:
-            print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
+            print("\n" + "ERROR: " + "Could not convert " + i + " to a float." + "\n")
             class_grades.append(float(0))
 
     names_ = []

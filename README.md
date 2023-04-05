@@ -17,7 +17,6 @@ This is a simple API to access the Home Access Center (HAC) of the [Frisco Indep
 
 ### course_grades
 
-* return_html(  )
 * return_current_grades(  )
 * return_quarter_grade(***quarter***)
 
