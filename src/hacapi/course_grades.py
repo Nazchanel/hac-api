@@ -160,7 +160,7 @@ def _initialize_classes(grades_html, names_html):
             class_name_8], [class1, class2, class3, class4, class5, class6, class7, class8]
 
 
-def returnCurrentGrades():
+def return_current_grades():
     # Creates a session to maintain credentials
 
     session.return_to_current()
