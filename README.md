@@ -4,36 +4,28 @@
 
 This is a simple API to access the Home Access Center (HAC) of the [Frisco Independent School District](https://www.friscoisd.org/). This API is not affiliated with the school district in any way.
 
----
 
-## Modules
 
-### assignment_grades
+## Documentation
 
-* return_quarter_assignments_html(***quarter***)
-* return_quarter_assignments_df(***quarter***)
-* return_current_assignments_df(    )
-* return_current_assignments_html(  )
+* return_current_assignments_df(  ) → list(pandas.DataFrame)
 
-### course_grades
+* return_current_assignments_html(  )  → list(str)
 
-* return_current_grades(  )
-* return_quarter_grade(***quarter***)
+* return_current_grades(  )  → tuple(list(str))
 
-### session
+* get_username()  → str
 
-* init(***username***, ***password***)
-* reset(    )
-* return_to_current(    )
+* reset(    )  → void
+* return_to_current(    )  → void
 
-### transcript
+## Out of Order
+* return_quarter_grade(***quarter***)  →
 
-* return_weighted_gpa(  )
-* return_college_gpa(   )
+* return_weighted_gpa(  )  →
 
-### misc
+* return_college_gpa(   )  →
 
-* is_updated(***original***, ***new***)
-* get_time( )
+* return_quarter_assignments_df(***quarter***)  →
 
----
+* return_quarter_assignments_html(***quarter***)  →
