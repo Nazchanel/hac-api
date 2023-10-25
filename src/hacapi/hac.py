@@ -1,12 +1,14 @@
 import requests
 from lxml import html
 from bs4 import BeautifulSoup
-from . import payloads  # Assuming payloads module exists in the same directory.
+# from . 
+import payloads  # Assuming payloads module exists in the same directory.
 import pandas as pd
 import re
 
+
 class Account:
-    
+
     def __init__(self, username, password):
         self.username = username
         self.password = password
@@ -170,7 +172,7 @@ class Account:
     def return_current_grades(self):
         # Creates a session to maintain credentials
         self.return_to_current()
-        html_data = self._return_html()
+        html_data = self._return_html(quarter=None)
 
         grades_html = html_data[0]
         name_html = html_data[1]
@@ -199,23 +201,14 @@ class Account:
         return names_, grades_
 
     def return_quarter_grade(self, quarter):
-        urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
-        payload = {}
+        # Work Here
+        # Creates a session to maintain credentials
 
-        if quarter == 1:
-            payload = payloads.payload1
-        elif quarter == 2:
-            payload = payloads.payload2
-        elif quarter == 3:
-            payload = payloads.payload3
-        elif quarter == 4:
-            payload = payloads.payload4
+        html_data = self._return_html(quarter= quarter)
+        print(html_data)
 
-        specific_quarter = self.session_requests.post(urls, data=payload, headers=dict(referer=urls))
-        soup = BeautifulSoup(specific_quarter.text, "html.parser")
-
-        grades_html = soup.find_all(class_="sg-header-heading sg-right")
-        name_html = soup.findAll('a', {"class": ["sg-header-heading"]})
+        grades_html = html_data[0]
+        name_html = html_data[1]
 
         classes = self._initialize_classes(grades_html, name_html)
 
@@ -240,15 +233,35 @@ class Account:
 
         return names_, grades_
 
-    def _return_html(self):
+    def _return_html(self, quarter):
         urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
-        result = self.session_requests.get(urls, headers=dict(referer=urls))
-        soup = BeautifulSoup(result.text, "html.parser")
 
-        grades_html = soup.find_all(class_="sg-header-heading sg-right")
-        name_html = soup.findAll('a', {"class": ["sg-header-heading"]})
+        if quarter is None:
+            result = self.session_requests.get(urls, headers=dict(referer=urls))
+            soup = BeautifulSoup(result.text, "html.parser")
 
-        return grades_html, name_html
+            grades_html = soup.find_all(class_="sg-header-heading sg-right")
+            name_html = soup.findAll('a', {"class": ["sg-header-heading"]})
+
+            return grades_html, name_html
+        else:
+            if quarter == 1:
+                json_obj = payloads.payload1
+            elif quarter == 2:
+                json_obj = payloads.payload2
+            elif json_obj == 3:
+                json_obj = payloads.payload3
+            else:
+                json_obj = payloads.payload4
+            
+            specific_quarter = session_requests.post(urls, data=json_obj,headers=dict(referer=urls))
+            
+            soup = BeautifulSoup(specific_quarter.text, "html.parser")
+
+            h1 = soup.find_all(class_="sg-header-heading sg-right")
+
+            h2 = soup.findAll('a', {"class": ["sg-header-heading"]})
+
 
     def return_to_current(self):
         urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Assignments.aspx"
@@ -364,41 +377,88 @@ class Account:
     def return_weighted_gpa(self):
         
         urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Transcript.aspx"
-    
+        
         result = self.session_requests.get(urls, headers=dict(referer=urls))
-    
-        df = pd.read_html(result.text)
-    
-        gpa_text = df[0].loc[3, 0]
-    
-        # Define a regular expression pattern to match the Weighted GPA
-        pattern = r'Weighted GPA\s+(\d+\.\d+)'
-    
-        # Use re.search() to find the first occurrence of the pattern in the string
-        match = re.search(pattern, gpa_text)
-    
-        # If a match was found, return the Weighted GPA as a float; otherwise, return None
-        return float(match.group(1)) if match else None
+        print("result achieved")
+        gpa = ""
+        # Read HTML content from the file
+
+        html_content = result.text
+
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        # Find the table with the specified ID
+        target_table = soup.find("table", {"id": "plnMain_rpTranscriptGroup_tblCumGPAInfo"})
+
+        # If the table is found, find the span within the table
+        if target_table:
+            target_span = target_table.find("span", {"id": "plnMain_rpTranscriptGroup_lblGPACum1"})
+            
+            # If the span is found, extract the text content and save it to the variable "gpa"
+            gpa = target_span.text.strip()
+       
+        return float(gpa)
 
 
     def return_college_gpa(self):
-
+        
         urls = "https://hac.friscoisd.org/HomeAccess/Content/Student/Transcript.aspx"
-
+        
         result = self.session_requests.get(urls, headers=dict(referer=urls))
+        
+        print("result achieved")
 
-        df = pd.read_html(result.text)
+        gpa = ""
+        # Read HTML content from the file
 
-        gpa_text = df[0].loc[3, 0]
+        html_content = result.text
 
-        pattern = r'College GPA\s+(\d+\.\d+)'
+        soup = BeautifulSoup(html_content, "html.parser")
 
-        match = re.search(pattern, gpa_text)
+        # Find the table with the specified ID
+        target_table = soup.find("table", {"id": "plnMain_rpTranscriptGroup_tblCumGPAInfo"})
 
-        if match:
-            return float(match.group(1))
-        else:
-            return None
+        # If the table is found, find the span within the table
+        if target_table:
+            target_span = target_table.find("span", {"id": "plnMain_rpTranscriptGroup_lblGPACum2"})
+            
+            # If the span is found, extract the text content and save it to the variable "gpa"
+            gpa = target_span.text.strip()
+       
+        return float(gpa)
+
+    def quarter_test(quarter):
+
+
+        grades_html = html[0]
+        name_html = html[1]
+        classes = initializeClasses(grades_html, name_html)
+
+        class_names = classes[0]
+        class_grades = classes[1]
+        try:
+            class_grades_ = [i.replace("%", "") for i in class_grades]
+        except:
+            class_grades_ = 0
+            print("FAILIURE")
+
+        class_grades = []    
+        for i in class_grades_: # type: ignore
+            try:
+                class_grades.append(float(i))
+            except:
+                print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
+                class_grades.append(float(0))
+        
+        names_ = []
+        grades_ = []
+
+        for i in range(len(class_names)):
+
+            names_.append(class_names[i])
+            grades_.append(class_grades[i])
+
+        return (names_, grades_, current_time)
 
 
     def get_username(self):

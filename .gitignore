@@ -11,6 +11,8 @@
 
 .idea
 *.ipynb
+*.html
+functions.py
 
 # AWS User-specific
 .idea/**/aws.xml
