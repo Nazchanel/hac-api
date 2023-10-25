@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "hacapi"
-version = "0.5.1"
+version = "0.5.2"
 description = "This is a simple API to access the Home Access Center (HAC)"
 readme = "README.md"
 authors = ["Nazchanel <eshaniyer@duck.com>"]
