@@ -10,7 +10,6 @@ class Invalid_Credentials(Exception):
     def __init__(self):
         super().__init__("Set the username and password to valid values!")
 class Account:
-
     def __init__(self, username, password):
         self.username = username
         self.password = password
@@ -28,7 +27,22 @@ class Account:
             "__RequestVerificationToken": authenticity_token,
             "LogOnDetails.UserName": username
         }
-        self.session_requests.post(login_url, data=self.login_payload, headers=dict(referer=login_url))
+        login_result = self.session_requests.post(login_url, data=self.login_payload, headers=dict(referer=login_url))
+        
+        # Checking if the credentials are correct for seeing if the login button is in the output
+        soup = BeautifulSoup(login_result.text, 'html.parser')
+
+        element = soup.find('div', class_='sg-login-sign-in')
+
+        # Check if the element exists
+        if element:
+            self.username = None
+            self.password = None
+            self.session_requests = None
+            result = None
+            login_result = None
+            raise Invalid_Credentials
+
         
     def reset(self):
         self.__init__(self.username, self.password)

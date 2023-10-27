@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "hacapi"
-version = "0.5.3"
+version = "0.5.4"
 description = "This is a simple API to access the Home Access Center (HAC)"
 readme = "README.md"
 authors = ["Nazchanel <eshaniyer@duck.com>"]
@@ -14,7 +14,7 @@ license = "MIT"
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 requests = "^2.26.0"
 lxml = "^4.6.3"
 beautifulsoup4 = "^4.10.0"
