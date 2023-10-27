@@ -13,6 +13,8 @@
 *.ipynb
 *.html
 functions.py
+credentials.py
+payloads.py
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -66,6 +68,8 @@ atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
 .idea/replstate.xml
+
+hac_copy.py
 
 # SonarLint plugin
 .idea/sonarlint/

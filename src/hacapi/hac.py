@@ -1,12 +1,14 @@
 import requests
 from lxml import html
 from bs4 import BeautifulSoup
-# from . 
-import payloads  # Assuming payloads module exists in the same directory.
+from . import payloads
 import pandas as pd
 import re
 
-
+# Invalid Credentials Error
+class Invalid_Credentials(Exception):
+    def __init__(self):
+        super().__init__("Set the username and password to valid values!")
 class Account:
 
     def __init__(self, username, password):
@@ -39,7 +41,8 @@ class Account:
             class1 = class1[116:121]
         except IndexError:
             print("Enter a valid six digit Student ID and password!")
-            exit(0)
+        raise Invalid_Credentials
+
 
         class2 = "0"
         try:
@@ -426,40 +429,5 @@ class Account:
             gpa = target_span.text.strip()
        
         return float(gpa)
-
-    def quarter_test(quarter):
-
-
-        grades_html = html[0]
-        name_html = html[1]
-        classes = initializeClasses(grades_html, name_html)
-
-        class_names = classes[0]
-        class_grades = classes[1]
-        try:
-            class_grades_ = [i.replace("%", "") for i in class_grades]
-        except:
-            class_grades_ = 0
-            print("FAILIURE")
-
-        class_grades = []    
-        for i in class_grades_: # type: ignore
-            try:
-                class_grades.append(float(i))
-            except:
-                print("\n" + Fore.RED + "ERROR: " + Fore.RESET + "Could not convert " + i + " to a float." + "\n")
-                class_grades.append(float(0))
-        
-        names_ = []
-        grades_ = []
-
-        for i in range(len(class_names)):
-
-            names_.append(class_names[i])
-            grades_.append(class_grades[i])
-
-        return (names_, grades_, current_time)
-
-
     def get_username(self):
         return self.username
