@@ -54,8 +54,7 @@ class Account:
             class1 = str(grades_html[0])
             class1 = class1[116:121]
         except IndexError:
-            print("Enter a valid six digit Student ID and password!")
-        raise Invalid_Credentials
+            raise Invalid_Credentials
 
 
         class2 = "0"
